@@ -2,43 +2,94 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <!-- Mobile-friendly viewport -->
+  <!-- Mobile-friendly scaling -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Piano Starter</title>
+  <title>Piano Starter - Enhanced Appearance + Theory Lessons</title>
+  <!-- Google Font: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
+
   <!-- Tone.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.39/Tone.js"></script>
-  <!-- VexFlow 1.2.93 (older version) -->
+  <!-- VexFlow 1.2.93 -->
   <script src="https://unpkg.com/vexflow@1.2.93/releases/vexflow-min.js"></script>
+
   <style>
-    /* Basic Page Styles */
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
+    /* ===============================
+       1) BASIC PAGE & COLOR PALETTE
+       =============================== */
+    :root {
+      --primary-color: #7C4DFF;   /* accent (deep purple) */
+      --bg-color: #f4f4f4;        /* background */
+      --container-bg: #ffffff;    /* container background */
+      --border-color: #ccc;
+      --text-color: #333;
+      --header-gradient: linear-gradient(135deg, #7C4DFF, #651FFF);
+      --hover-bg: #eee;
+      --transition-speed: 0.3s;
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
+      padding: 0;
     }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-color);
+    }
+
+    /* ===============================
+       2) HEADER & NAV
+       =============================== */
     header {
-      background: #333;
+      background: var(--header-gradient);
       color: #fff;
-      padding: 15px;
+      padding: 20px;
       text-align: center;
+      transition: background var(--transition-speed);
     }
+    header:hover {
+      filter: brightness(1.05);
+    }
+
     nav {
       text-align: center;
       margin: 15px 0;
     }
     nav button {
-      margin: 0 10px;
+      background: var(--primary-color);
+      color: #fff;
+      border: none;
       padding: 10px 20px;
+      margin: 0 10px;
       font-size: 16px;
+      border-radius: 20px;
       cursor: pointer;
+      transition: background var(--transition-speed), transform var(--transition-speed);
     }
+    nav button:hover {
+      background: #5e36c6;
+      transform: translateY(-2px);
+    }
+
+    /* ===============================
+       3) CONTAINER & SECTIONS
+       =============================== */
     .container {
       max-width: 900px;
       margin: auto;
-      background: #fff;
+      background: var(--container-bg);
       padding: 20px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      transition: box-shadow var(--transition-speed);
     }
+    .container:hover {
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    }
+
     .section {
       display: none;
     }
@@ -47,30 +98,51 @@
     }
     h2 {
       text-align: center;
+      margin-bottom: 10px;
+      color: var(--text-color);
+    }
+    p {
+      color: var(--text-color);
+      margin-bottom: 10px;
     }
 
-    /* Staff container - responsive */
+    /* ===============================
+       4) STAFF CONTAINER
+       =============================== */
     #staffContainer {
       margin: 20px auto;
       width: 100%;
       max-width: 520px;
-      height: auto;
-      border: 1px solid #ccc;
+      height: 320px;  /* FIXED height so low notes are visible */
+      border: 1px solid var(--border-color);
       background: #fff;
+      border-radius: 6px;
+      overflow: hidden;
+      transition: box-shadow var(--transition-speed);
+    }
+    #staffContainer:hover {
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
     }
 
-    /* Piano container */
+    /* ===============================
+       5) PIANO CONTAINER
+       =============================== */
     #pianoContainer {
       margin: 30px auto;
       overflow-x: auto;
       width: 100%;
-      border: 1px solid #ccc;
+      border: 1px solid var(--border-color);
       background: #f0f0f0;
+      border-radius: 6px;
+      transition: box-shadow var(--transition-speed);
+    }
+    #pianoContainer:hover {
+      box-shadow: 0 0 6px rgba(0,0,0,0.1);
     }
     #pianoKeys {
       position: relative;
       height: 200px;
-      width: 3000px; 
+      width: 3000px;
     }
 
     /* White & black keys */
@@ -80,12 +152,12 @@
       height: 200px;
       border: 1px solid #000;
       background: #fff;
-      box-sizing: border-box;
       z-index: 1;
       cursor: pointer;
+      transition: background var(--transition-speed);
     }
     .white-key:active {
-      background: #ddd;
+      background: var(--hover-bg);
     }
     .black-key {
       position: absolute;
@@ -98,24 +170,55 @@
       z-index: 2;
       cursor: pointer;
       border: 1px solid #333;
+      transition: background var(--transition-speed);
     }
     .black-key:active {
-      background: #555;
+      background: #444;
     }
 
+    /* ===============================
+       6) FOOTER
+       =============================== */
     footer {
       text-align: center;
       margin-top: 20px;
       padding: 10px;
-      background: #333;
-      color: #fff;
+      background: #ffffff;
+      color: #000000;
     }
 
-    /* Optional: shrink staff or keys on narrower screens */
+    /* ===============================
+       7) MOBILE EXTRA MARGIN
+       =============================== */
     @media (max-width: 600px) {
-      #staffContainer {
-        max-width: 320px;
+      #pianoContainer {
+        margin-top: 40px; /* extra space under staff area */
       }
+    }
+
+    /* ===============================
+       8) THEORY CONTENT STYLING
+       =============================== */
+    .theory-content {
+      margin-top: 20px;
+    }
+    .theory-section {
+      margin-bottom: 20px;
+    }
+    .theory-section h3 {
+      color: var(--primary-color);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .theory-section img {
+      max-width: 100%;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      margin: 10px 0;
+    }
+    .theory-section p {
+      margin-bottom: 8px;
+      line-height: 1.5;
     }
   </style>
 </head>
@@ -124,27 +227,59 @@
   <header>
     <h1>Piano Starter</h1>
   </header>
+
   <nav>
     <button id="theoryTab">Théorie</button>
     <button id="practiceTab">Pratique</button>
   </nav>
+
   <div class="container">
     <!-- THEORY SECTION -->
     <div id="theorySection" class="section active">
       <h2>Théorie Musicale</h2>
-      <p>Intégrez vos leçons de solfège, rythmes, etc.</p>
-      <details>
-        <summary>Lecture de partition (Clés de sol et de fa)</summary>
-        <p>En clé de sol, la 2ème ligne représente le Sol. En clé de fa, la 4ème ligne représente le Fa.</p>
-        <div class="quiz">
-          <p>Question : En clé de sol, quelle note se trouve sur la 2ème ligne ?</p>
-          <button onclick="checkQuizAnswer('q1','G')">G</button>
-          <button onclick="checkQuizAnswer('q1','A')">A</button>
-          <button onclick="checkQuizAnswer('q1','C')">C</button>
-          <button onclick="checkQuizAnswer('q1','D')">D</button>
-          <p id="q1"></p>
+      <div class="theory-content">
+        
+        <!-- 1) Basic Staff Reading -->
+        <div class="theory-section">
+          <h3>1. Lire les notes sur la portée</h3>
+          <p>La portée est constituée de 5 lignes et 4 interlignes où se placent les notes. 
+             En clé de sol, la note Sol se trouve sur la 2ème ligne. En clé de fa, la note Fa se trouve sur la 4ème ligne, etc.</p>
+          <p>Voici une illustration d’une portée simple avec quelques notes basiques :</p>
+          <img src="https://via.placeholder.com/400x120/eeeeee/333333?text=Exemple+Port%C3%A9e+et+Notes" alt="Exemple de notes sur la portée">
+          <p>Sur un piano, chaque note correspond à une touche. Les touches blanches sont généralement des notes naturelles (C, D, E, F, G, A, B) et les touches noires représentent les altérations (dièses ou bémols).</p>
+          <img src="https://via.placeholder.com/400x150/eeeeee/333333?text=Exemple+Port%C3%A9e+et+Clavier" alt="Exemple de portée liée au clavier">
         </div>
-      </details>
+
+        <!-- 2) Chords (Accords) -->
+        <div class="theory-section">
+          <h3>2. Les Accords</h3>
+          <p>Un accord est un ensemble de plusieurs notes jouées simultanément. Par exemple, un accord de Do majeur (C) est constitué des notes C-E-G. 
+             Les accords peuvent être majeurs, mineurs, diminués, augmentés, etc.</p>
+          <img src="https://via.placeholder.com/400x150/eeeeee/333333?text=Exemple+Accord+sur+la+Port%C3%A9e" alt="Accord sur la portée">
+          <p>Sur le clavier, on appuie sur les touches correspondantes en même temps pour former l’accord.</p>
+        </div>
+
+        <!-- 3) Rythms -->
+        <div class="theory-section">
+          <h3>3. Le Rythme</h3>
+          <p>Le rythme est essentiel en musique. Il définit la durée des notes et leur placement dans le temps. 
+             Par exemple, une ronde (4 temps), une blanche (2 temps), une noire (1 temps), une croche (1/2 temps), etc.</p>
+          <img src="https://via.placeholder.com/400x80/eeeeee/333333?text=Figures+de+Rythme" alt="Figures de rythme">
+          <p>Les mesures sont souvent en 4/4, 3/4, 6/8, etc., indiquant le nombre de temps par mesure et la figure de note qui vaut un temps.</p>
+        </div>
+
+        <!-- 4) Gammes (Scales) & Armures (Key Signatures) -->
+        <div class="theory-section">
+          <h3>4. Gammes et Armures</h3>
+          <p>Une gamme est une succession de notes organisées selon un intervalle précis (ex. gamme majeure : ton-ton-demi-ton-ton-ton-ton-demi-ton). 
+             Par exemple, la gamme de Do majeur (C major) est C-D-E-F-G-A-B-C (sans dièse ni bémol).</p>
+          <img src="https://via.placeholder.com/400x100/eeeeee/333333?text=Gamme+Majeure" alt="Gamme Majeure">
+          <p>L’armure (ou key signature) se place juste après la clé et indique les dièses ou bémols qui s’appliquent à chaque note de la gamme. 
+             Par exemple, la gamme de Sol majeur (G major) comporte un dièse (F#). L’armure affichera donc un F# sur la portée.</p>
+          <img src="https://via.placeholder.com/400x120/eeeeee/333333?text=Armure+de+Sol+majeur" alt="Exemple d'armure (F#)">
+        </div>
+
+      </div>
     </div>
 
     <!-- PRACTICE SECTION -->
@@ -152,8 +287,11 @@
       <h2>Pratique</h2>
       <div class="exercise">
         <p>Jouez les 4 notes affichées sur la partition :</p>
-        <button id="newExerciseBtn">Nouvelle Série</button>
-        <p class="message" id="message"></p>
+        <button id="newExerciseBtn"
+          style="background: var(--primary-color); color:#fff; border:none; padding:10px 20px; border-radius:20px; cursor:pointer; transition: background 0.3s, transform 0.3s;">
+          Nouvelle Série
+        </button>
+        <p class="message" id="message" style="margin-top:10px; font-weight:600;"></p>
       </div>
       <div id="staffContainer"></div>
       <div id="pianoContainer">
@@ -163,53 +301,60 @@
   </div>
 
   <footer>
-    <p>Piano Starter &copy; 2025</p>
+    <p>Piano Starter 2025 v0.2</p>
   </footer>
 
   <script>
+    /**********************************************
+     * 1) SAMPLE-BASED PIANO
+     **********************************************/
     document.addEventListener("DOMContentLoaded", function(){
-      /**********************************************
-       * 1) GLOBALS
-       **********************************************/
-      let exerciseNotes = [];  
-      const VF = Vex.Flow;
-      const synth = new Tone.Synth().toDestination();
+      const piano = new Tone.Sampler({
+        urls: {
+          "C4": "C4.mp3",
+          "D#4": "Ds4.mp3",
+          "F#4": "Fs4.mp3",
+          "A4": "A4.mp3"
+        },
+        baseUrl: "https://tonejs.github.io/audio/salamander/",
+        onload: () => console.log("Piano samples loaded!")
+      }).toDestination();
 
-      /* letter->semitone */
+      /**********************************************
+       * 2) GLOBALS & MAPPINGS
+       **********************************************/
+      let exerciseNotes = []; // single declaration
+
+      const VF = Vex.Flow;
       const letterToSemitone = {
-        "C":0,"C#":1,"D":2,"D#":3,"E":4,"F":5,"F#":6,"G":7,"G#":8,"A":9,"A#":10,"B":11,
-        "Bb":10
+        "C":0,"C#":1,"Db":1,"D":2,"D#":3,"Eb":3,"E":4,
+        "F":5,"F#":6,"Gb":6,"G":7,"G#":8,"Ab":8,"A":9,
+        "A#":10,"Bb":10,"B":11
       };
-      /* semitone->sharp */
       const semitoneToSharp = {
         0:"C",1:"C#",2:"D",3:"D#",4:"E",5:"F",6:"F#",7:"G",8:"G#",9:"A",10:"A#",11:"B"
       };
 
-      // parse note => numeric
       function noteToValue(n){
-        const m = n.match(/([A-G]#?)(\d)/);
+        const m= n.match(/([A-G]#?)(\d)/);
         if(!m)return -1;
-        let spelled = m[1];
-        let oct = parseInt(m[2],10);
-        let sem = letterToSemitone[spelled]||0;
+        let spelled= m[1];
+        let oct= parseInt(m[2],10);
+        let sem= letterToSemitone[spelled]||0;
         return 12*oct + sem;
       }
 
-      // convert spelled => vexflow ignoring accidental
       function convertNoteFormat(noteStr){
-        // e.g. "Db4" => "d/4"
-        let pattern = /([A-G])([b#]?)(\d)/;
-        let m = noteStr.match(pattern);
-        if(!m) return noteStr; 
-        let letter = m[1]; 
-        let accidental = m[2]; 
-        let octave = m[3];
-        // ignore accidental => "d/4"
-        return letter.toLowerCase() + "/" + octave; 
+        let pattern=/([A-G])([b#]?)(\d)/;
+        let m= noteStr.match(pattern);
+        if(!m)return noteStr;
+        let letter=m[1];
+        let octave=m[3];
+        return letter.toLowerCase()+"/"+octave;
       }
 
       /**********************************************
-       * 2) KEYBOARD OFFSET SCALING FOR MOBILE
+       * 3) KEYBOARD OFFSET SCALING FOR MOBILE
        **********************************************/
       let whiteKeyOffsets = { "C":0,"D":60,"E":120,"F":180,"G":240,"A":300,"B":360 };
       let blackKeyOffsets = { "C#":40,"D#":100,"F#":220,"G#":280,"A#":340 };
@@ -217,10 +362,10 @@
       if(window.matchMedia("(max-width:600px)").matches){
         let scale=0.66;
         for(let k in whiteKeyOffsets){
-          whiteKeyOffsets[k] = Math.round(whiteKeyOffsets[k]*scale);
+          whiteKeyOffsets[k]= Math.round(whiteKeyOffsets[k]*scale);
         }
         for(let k in blackKeyOffsets){
-          blackKeyOffsets[k] = Math.round(blackKeyOffsets[k]*scale);
+          blackKeyOffsets[k]= Math.round(blackKeyOffsets[k]*scale);
         }
         whiteKeyWidth= Math.round(whiteKeyWidth*scale);
         blackKeyWidth= Math.round(blackKeyWidth*scale);
@@ -228,7 +373,7 @@
       }
 
       /**********************************************
-       * 3) BUILD FULL NOTES (C2..C6)
+       * 4) BUILD FULL NOTES (C2..C6)
        **********************************************/
       const fullNoteNames=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
       let allFullNotes=[];
@@ -240,16 +385,16 @@
       allFullNotes.push("C6");
 
       // Filter staff ranges
-      const allVals= allFullNotes.map(n=>({ note:n, val: noteToValue(n)}));
+      const allVals= allFullNotes.map(n=>({ note:n, val: noteToValue(n) }));
       const bassLowVal= noteToValue("C2");
       const bassHighVal= noteToValue("E4");
       const trebLowVal= noteToValue("A3");
       const trebHighVal= noteToValue("C6");
-      const bassNotesArray= allVals.filter(o=> o.val>=bassLowVal && o.val<=bassHighVal).map(o=>o.note);
+      const bassNotesArray= allVals.filter(o=> o.val>=bassLowVal&&o.val<=bassHighVal).map(o=>o.note);
       const trebleNotesArray= allVals.filter(o=> o.val>=trebLowVal&&o.val<=trebHighVal).map(o=>o.note);
 
       /**********************************************
-       * 4) RANDOM ACCIDENTALS
+       * 5) RANDOM ACCIDENTALS
        **********************************************/
       const allowedSharps=["C","D","F","G","A"];
       const allowedFlats=["D","E","G","A","B"];
@@ -262,17 +407,19 @@
           if(Math.random()<0.5 && allowedSharps.includes(letter)){
             return { display: letter+"#"+note.slice(1), actual: letter+"#"+note.slice(1) };
           } else if(allowedFlats.includes(letter)){
-            let disp= letter+"b"+note.slice(1);
-            let sem= letterToSemitone[disp];
+            let disp= letter+"b"+ note.slice(1);
+            let spelled= letter+"b";
+            let sem= letterToSemitone[spelled];
+            let octave= note.slice(1);
             let sharpEquiv= semitoneToSharp[sem];
-            return { display: disp, actual: sharpEquiv+note.slice(1) };
+            return { display: disp, actual: sharpEquiv+octave };
           }
         }
         return { display: note, actual: note };
       }
 
       /**********************************************
-       * 5) BUILD KEYBOARD
+       * 6) BUILD KEYBOARD
        **********************************************/
       function buildKeyboard(){
         const pianoKeysDiv= document.getElementById("pianoKeys");
@@ -310,7 +457,9 @@
             keyElem.style.height= containerHeight+"px";
           }
           keyElem.style.left= xPos+"px";
-          keyElem.textContent= (note==="C4")? "C4":"";
+          if(note==="C4"){
+            keyElem.textContent="C4";
+          }
           keyElem.setAttribute("data-note", note);
           pianoKeysDiv.appendChild(keyElem);
         }
@@ -324,10 +473,10 @@
       }
 
       /**********************************************
-       * 6) GENERATE EXERCISE (4 notes)
+       * 7) GENERATE EXERCISE
        **********************************************/
       function generateNewSeries(){
-        exerciseNotes=[];
+        exerciseNotes = [];
         // 2 treble
         for(let i=0;i<2;i++){
           let base= trebleNotesArray[Math.floor(Math.random()*trebleNotesArray.length)];
@@ -357,30 +506,26 @@
       }
 
       /**********************************************
-       * 7) RENDER STAFF
-       *   - measure container => dynamic staff
-       *   - offset bass note + accidental by 20
+       * 8) RENDER STAFF (Fixed 320px, Treble at y=40, Bass at y=200)
        **********************************************/
       function renderStaff(){
         const staffContainer= document.getElementById("staffContainer");
         staffContainer.innerHTML="";
         let staffWidth= staffContainer.offsetWidth;
-        let staffHeight= Math.round(staffWidth*0.58);
-        if(staffHeight<200) staffHeight=200;
+        let staffHeight= 320; // fixed
 
         const renderer= new VF.Renderer(staffContainer, VF.Renderer.Backends.SVG);
         renderer.resize(staffWidth, staffHeight);
         const context= renderer.getContext();
 
-        let trebleY= Math.round(staffHeight*0.08);
-        let bassY  = Math.round(staffHeight*0.55);
-        let staveW = staffWidth-20;
+        let staveW= staffWidth-20;
 
-        const staveTreble= new VF.Stave(10, trebleY, staveW);
+        // Treble staff at y=40, Bass staff at y=200
+        const staveTreble= new VF.Stave(10, 40, staveW);
         staveTreble.addClef("treble");
         staveTreble.setContext(context).draw();
 
-        const staveBass= new VF.Stave(10, bassY, staveW);
+        const staveBass= new VF.Stave(10, 200, staveW);
         staveBass.addClef("bass");
         staveBass.setContext(context).draw();
 
@@ -408,22 +553,18 @@
             duration: obj.duration
           });
 
-          // Add accidental if needed
           if(obj.spelledName.includes("#")){
             staveNote.addAccidental(0, new VF.Accidental("#"));
           } else if(obj.spelledName.includes("b")){
             staveNote.addAccidental(0, new VF.Accidental("b"));
           }
 
-          // SHIFT the entire note + accidental in the bass staff
           if(obj.staff==="bass"){
-            staveNote.setXShift(20); 
-            // shift each accidental so it stays close to the note
-            const mods = staveNote.getModifiers();
+            staveNote.setXShift(20);
+            const mods= staveNote.getModifiers();
             if(mods && mods.length>0){
-              mods.forEach(m => {
-                // only shift accidentals
-                if(m.getCategory && m.getCategory() === "accidentals"){
+              mods.forEach(m=>{
+                if(m.getCategory && m.getCategory()==="accidentals"){
                   m.setXShift(20);
                 }
               });
@@ -448,10 +589,10 @@
       }
 
       /**********************************************
-       * 8) ON USER PLAY
+       * 9) ON USER PLAY => TRIGGER PIANO
        **********************************************/
       function onUserPlay(playedNote){
-        synth.triggerAttackRelease(playedNote,"8n");
+        piano.triggerAttackRelease(playedNote, "8n");
         for(let obj of exerciseNotes){
           if(!obj.correct && obj.actualName===playedNote){
             obj.correct=true;
@@ -468,32 +609,15 @@
       }
 
       /**********************************************
-       * 9) QUIZ EXAMPLE
-       **********************************************/
-      window.checkQuizAnswer=function(questionId,answer){
-        const correctAnswers={ 'q1':'G' };
-        const resultElem= document.getElementById(questionId);
-        if(answer===correctAnswers[questionId]){
-          resultElem.textContent="Correct !";
-          resultElem.style.color="green";
-        } else {
-          resultElem.textContent="Incorrect, essayez encore.";
-          resultElem.style.color="red";
-        }
-      };
-
-      /**********************************************
-       * 10) INIT
+       * 10) INIT & TABS
        **********************************************/
       function init(){
         buildKeyboard();
       }
       init();
 
-      // "Nouvelle Série" button
       document.getElementById("newExerciseBtn").addEventListener("click", generateNewSeries);
 
-      // Tab switching
       const theoryTab= document.getElementById("theoryTab");
       const practiceTab= document.getElementById("practiceTab");
       const theorySection= document.getElementById("theorySection");
